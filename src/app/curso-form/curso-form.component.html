@@ -1,0 +1,32 @@
+<div class="container py-5">
+  <div class="card shadow w-100" style="max-width: 600px; margin: auto;">
+    <div class="card-body">
+      <h3 class="fw-bold mb-3">{{ titulo }}</h3>
+      <div *ngIf="tipo === 'lectura'">
+        <h5>Lectura</h5>
+        <p>{{ descripcion }}</p>
+      </div>
+      <div *ngIf="tipo === 'preguntas' && nivel?.preguntas?.length">
+        <h5>Preguntas</h5>
+        <div *ngFor="let pregunta of nivel.preguntas; let i = index" class="mb-4">
+          <div class="fw-bold mb-2">Pregunta {{ i + 1 }}:</div>
+          <div class="mb-2">{{ pregunta.texto }}</div>
+          <div *ngIf="pregunta.opciones?.length">
+            <div *ngFor="let opcion of pregunta.opciones; let j = index" class="form-check">
+              <input class="form-check-input" type="radio" [name]="'pregunta' + i" [id]="'opcion' + i + '-' + j">
+              <label class="form-check-label" [for]="'opcion' + i + '-' + j">
+                {{ opcion }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="tipo !== 'lectura' && tipo !== 'preguntas'">
+        <div class="alert alert-info">
+          Este tipo de actividad aún no tiene una vista específica.<br>
+          <span class="fw-bold">Tipo:</span> {{ tipo }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

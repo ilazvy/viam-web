@@ -1,0 +1,229 @@
+/* RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* CONTENEDORES */
+.contenedor {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* TITULOS */
+h1, h2, h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+/* FORMULARIOS */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+input, textarea, select {
+  padding: 0.9rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* BOTONES */
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn-secundario {
+  background-color: #6c757d;
+}
+
+.btn-secundario:hover {
+  background-color: #5a6268;
+}
+
+button:disabled {
+  background-color: #c0cbd7;
+  cursor: not-allowed;
+}
+
+/* GRUPOS DE FORMULARIO */
+.form-grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* LAYOUT RESPONSIVO */
+@media (max-width: 768px) {
+  .contenedor {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+
+  input, textarea, select {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* MODO OSCURO GLOBAL */
+body.modo-oscuro {
+  background-color: #181a1b !important;
+  color: #e0e0e0 !important;
+}
+
+body.modo-oscuro .card {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+  border-color: #23272b !important;
+}
+
+body.modo-oscuro .form-control,
+body.modo-oscuro input,
+body.modo-oscuro textarea,
+body.modo-oscuro select,
+body.modo-oscuro .form-select {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+body.modo-oscuro .form-check-input {
+  background-color: #23272b !important;
+  border-color: #444 !important;
+}
+
+body.modo-oscuro .btn,
+body.modo-oscuro .btn-outline-danger {
+  background-color: #23272b;
+  color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+
+body.modo-oscuro .btn:hover,
+body.modo-oscuro .btn-outline-danger:hover {
+  background-color: #343a40;
+  color: #fff;
+  border-color: #fff;
+}
+
+body.modo-oscuro .card-footer,
+body.modo-oscuro .form-check-label,
+body.modo-oscuro .text-muted {
+  color: #b0b0b0 !important;
+}
+
+/* NAVBAR MODO OSCURO */
+body.modo-oscuro .navbar,
+body.modo-oscuro .navbar.custom-navbar,
+body.modo-oscuro .navbar.fixed-bottom,
+body.modo-oscuro .navbar-light {
+  background-color: #23272b !important;
+  border-top: 1px solid #343a40 !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.4) !important;
+}
+
+body.modo-oscuro .navbar-btn,
+body.modo-oscuro .navbar-btn:active,
+body.modo-oscuro .navbar-btn:focus {
+  color: #e0e0e0 !important;
+  background: none !important;
+}
+
+body.modo-oscuro .navbar-label {
+  color: #b0b0b0 !important;
+}
+
+body.modo-oscuro .navbar-btn .bi {
+  color: #e0e0e0 !important;
+}
+
+body.modo-oscuro .navbar-btn:hover,
+body.modo-oscuro .navbar-btn:focus-visible {
+  background: #181a1b !important;
+}
+
+body.modo-oscuro .container,
+body.modo-oscuro .container-fluid,
+body.modo-oscuro .bg-light,
+body.modo-oscuro .bg-white {
+  background-color: #181a1b !important;
+  color: #e0e0e0 !important;
+}
+
+/* ICONOS modo oscuro (Bootstrap Icons) */
+body.modo-oscuro .bi,
+body.modo-oscuro .input-group-text .bi {
+  color: #e0e0e0 !important;
+}
+
+/* Input-group y sus iconos */
+body.modo-oscuro .input-group-text {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+/* Dropdowns modo oscuro */
+body.modo-oscuro .dropdown-menu,
+body.modo-oscuro .dropdown-item {
+  background-color: #23272b !important;
+  color: #e0e0e0 !important;
+}
+
+body.modo-oscuro .dropdown-item:hover,
+body.modo-oscuro .dropdown-item:focus {
+  background-color: #343a40 !important;
+  color: #fff !important;
+}
+
+/* Placeholders modo oscuro */
+body.modo-oscuro ::placeholder {
+  color: #b0b0b0 !important;
+  opacity: 1;
+}

@@ -1,0 +1,44 @@
+.stat-box {
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.stat-input {
+  max-width: 70px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+.progress-bar {
+  font-size: 0.95rem;
+  justify-content: center;
+  align-items: center;
+}
+.perfil-progress {
+  background-color: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+@media (max-width: 991.98px) {
+  .stat-box {
+    min-height: 90px;
+    padding: 0.75rem !important;
+  }
+  .stat-input {
+    font-size: 1rem;
+    max-width: 60px;
+  }
+}
+@media (max-width: 575.98px) {
+  .stat-box {
+    min-height: 70px;
+    padding: 0.5rem !important;
+  }
+  .stat-input {
+    font-size: 0.95rem;
+    max-width: 50px;
+  }
+  .perfil-progress {
+    height: 16px !important;
+  }
+}
