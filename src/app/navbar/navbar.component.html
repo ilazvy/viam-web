@@ -9,30 +9,26 @@
 </head>
 <body>
 
-<nav class="navbar navbar-light bg-white border-top shadow-lg fixed-bottom px-0 custom-navbar">
+
+<nav class="navbar custom-navbar-glass fixed-bottom px-0 animated-fadeInUp">
   <div class="container-fluid d-flex justify-content-around align-items-center py-1">
-    <!-- Curso actual -->
-    <button class="navbar-btn"
-            (click)="irCursoActual()">
-      <i class="bi bi-journal-code fs-3"></i>
-      <span class="small navbar-label">Mi Curso</span>
-    </button>
     <!-- Materias -->
-    <button class="navbar-btn"
-            (click)="irMaterias()">
-      <i class="bi bi-grid-1x2 fs-3"></i>
+    <button class="navbar-btn" [ngClass]="{'active': seccionActual === 'materias'}" (click)="irMaterias()">
+      <span class="navbar-icon-glass"><i class="bi bi-grid-1x2 fs-3"></i></span>
       <span class="small navbar-label">Materias</span>
     </button>
     <!-- Perfil -->
-    <button class="navbar-btn"
-            (click)="irPerfil()">
-      <i class="bi bi-person-circle fs-3"></i>
+    <button class="navbar-btn" [ngClass]="{'active': seccionActual === 'perfil'}" (click)="irPerfil()">
+      <span class="navbar-icon-glass position-relative">
+        <i class="bi bi-person-circle fs-3"></i>
+        <!-- Badge de notificación, implementar despues, puede ser usado para los cursos -->
+        <span *ngIf="tieneNotificaciones" class="navbar-badge"></span>
+      </span>
       <span class="small navbar-label">Perfil</span>
     </button>
     <!-- Configuración -->
-    <button class="navbar-btn"
-            (click)="irConfiguracion()">
-      <i class="bi bi-gear fs-3"></i>
+    <button class="navbar-btn" [ngClass]="{'active': seccionActual === 'configuracion'}" (click)="irConfiguracion()">
+      <span class="navbar-icon-glass"><i class="bi bi-gear fs-3"></i></span>
       <span class="small navbar-label">Config</span>
     </button>
   </div>

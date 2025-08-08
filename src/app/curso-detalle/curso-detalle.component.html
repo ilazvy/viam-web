@@ -6,72 +6,53 @@
   <i class="bi bi-arrow-left-circle-fill fs-2 text-primary" style="cursor: pointer;" (click)="volver()" title="Volver"></i>
 </div>
 
-<div class="container py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center bg-light position-relative">
+<!-- Loader -->
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+  <div class="mt-3">Cargando curso...</div>
+</div>
+
+<!-- Error -->
+<div *ngIf="errorMsg" class="alert alert-danger text-center my-5">
+  {{ errorMsg }}
+</div>
+
+<!-- Detalle del curso -->
+<div *ngIf="curso" class="container py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center bg-light position-relative">
   <div class="card shadow-lg border-0 w-100" style="max-width: 700px;">
-    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=700&q=80"
-         class="card-img-top" alt="Ciencia - ejemplo">
+    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=700&q=80"
+         class="card-img-top" alt="Imagen del curso">
     <div class="card-body">
       <div class="mb-4 text-center">
         <h2 class="fw-bold mt-2 mb-0">{{ curso.titulo }}</h2>
         <p class="text-secondary mb-0">{{ curso.descripcion }}</p>
         <div class="mt-2">
-          <span class="badge bg-info text-dark me-2">{{ curso.nivel | titlecase }}</span>
-          <span class="badge bg-secondary me-2">{{ curso.duracionEstimada }}h</span>
-          <span class="badge bg-success">Puntaje máximo: {{ curso.puntajeMaximo }}</span>
-        </div>
-        <div class="mt-2 small text-muted">
-          Instructor: {{ curso.instructor.nombre }} <br>
-          Creado: {{ curso.fechaCreacion | date:'medium' }}
+          <span class="badge bg-info text-dark me-2">Principiante</span>
+          <span class="badge bg-success">{{ curso.actividades.length }} Actividades</span>
         </div>
       </div>
-      <div class="accordion" id="temasAccordion">
-        <div class="accordion-item" *ngFor="let tema of curso.temas; let i = index">
-          <h2 class="accordion-header d-flex align-items-center" [id]="'temaHeading' + i">
-            <!-- Título del tema clickeable -->
-            <button class="accordion-button fw-bold flex-grow-1" type="button" data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#temaCollapse' + i" [attr.aria-expanded]="i === 0 ? 'true' : 'false'"
-              [attr.aria-controls]="'temaCollapse' + i">
-              <i class="bi bi-folder2-open me-2 text-info"></i>
-              <span style="cursor:pointer; text-decoration:underline"
-                    (click)="irACursoForm(tema.niveles[0]); $event.stopPropagation();">
-                {{ tema.titulo }}
+      <div class="mb-4">
+        <h5 class="fw-bold mb-2">Actividades del curso</h5>
+        <ul class="list-group">
+          <li *ngFor="let actividad of curso.actividades; let i = index"
+              class="list-group-item d-flex align-items-center"
+              style="cursor:pointer"
+              (click)="verActividad(actividad.id)">
+            <i [class]="iconoNivel(actividad.tipo) + ' me-3'"></i>
+            <div class="flex-grow-1">
+              <div class="fw-bold">{{ actividad.titulo }}</div>
+              <div class="text-muted small">{{ actividad.descripcion }}</div>
+              <span class="badge badge-pill" 
+                    [class]="actividad.tipo === 'lectura' ? 'bg-primary' : 
+                            actividad.tipo === 'preguntas' ? 'bg-warning text-dark' : 'bg-success'">
+                {{ actividad.tipo | titlecase }}
               </span>
-            </button>
-          </h2>
-          <div [id]="'temaCollapse' + i" class="accordion-collapse collapse" [class.show]="i === 0"
-            [attr.aria-labelledby]="'temaHeading' + i" data-bs-parent="#temasAccordion">
-            <div class="accordion-body px-2">
-              <div class="list-group">
-                <button type="button"
-                        class="list-group-item list-group-item-action py-3"
-                        *ngFor="let nivel of tema.niveles; let j = index"
-                        (click)="verNivel(curso.id, i, j)">
-                  <div class="d-flex align-items-center mb-2">
-                    <i [ngClass]="iconoNivel(nivel.tipo) + ' fs-5 me-3'"></i>
-                    <div>
-                      <h6 class="mb-1 fw-bold">{{ nivel.titulo }}</h6>
-                      <small class="text-muted">{{ nivel.descripcion }}</small>
-                    </div>
-                  </div>
-                  <span *ngIf="nivel.puntajeMaximo" class="badge bg-light text-dark ms-auto">
-                    Puntaje: {{ nivel.puntajeMaximo }}
-                  </span>
-                </button>
-                <!-- Si tienes subtemas, puedes mostrarlos aquí -->
-                <div *ngIf="tema.subtemas?.length">
-                  <div class="mt-3 ms-4">
-                    <div class="fw-bold text-info">Subtemas:</div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item px-0 py-1" *ngFor="let subtema of tema.subtemas">
-                        {{ subtema.titulo }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- Fin subtemas -->
-              </div>
             </div>
-          </div>
+            <i class="bi bi-chevron-right text-muted"></i>
+          </li>
+        </ul>
+        <div *ngIf="!curso.actividades || curso.actividades.length === 0" class="text-center text-muted mt-3">
+          No hay actividades registradas para este curso.
         </div>
       </div>
     </div>

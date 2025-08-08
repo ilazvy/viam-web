@@ -9,30 +9,27 @@
 <div class="container py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center bg-light">
   <div class="card shadow-lg border-0 w-100" style="max-width: 600px;">
     <div class="card-body">
-      <div class="mb-4 text-center">
-        <i class="bi bi-journal-code text-primary" style="font-size: 2.5rem;"></i>
-        <h2 class="fw-bold mt-3 mb-1">{{ nivel?.titulo }}</h2>
-        <div class="text-secondary mb-2 fs-5">{{ temaNombre }}</div>
-        <div class="mb-2">
-          <span class="badge bg-primary me-1" *ngIf="nivel?.tipo === 'lectura'">Lectura</span>
-          <span class="badge bg-warning text-dark me-1" *ngIf="nivel?.tipo === 'preguntas'">Preguntas</span>
-          <span class="badge bg-success me-1" *ngIf="nivel?.tipo === 'examen'">Examen</span>
-          <span class="badge bg-info text-dark" *ngIf="nivel?.puntajeMaximo">Puntaje máximo: {{ nivel?.puntajeMaximo }}</span>
-        </div>
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <div class="mt-3">Cargando tema...</div>
       </div>
-      <div *ngIf="nivel">
-        <div class="mb-4">
-          <p class="lead mb-0">{{ nivel.descripcion }}</p>
+      <div *ngIf="errorMsg" class="alert alert-danger text-center my-5">
+        {{ errorMsg }}
+      </div>
+      <div *ngIf="!loading && !errorMsg">
+        <div class="mb-4 text-center">
+          <i class="bi bi-journal-code text-primary" style="font-size: 2.5rem;"></i>
+          <h2 class="fw-bold mt-3 mb-1">{{ temaNombre }}</h2>
+          <div class="text-secondary mb-2 fs-5">{{ curso?.titulo }}</div>
         </div>
         <button class="btn btn-outline-primary w-100 py-2 fw-semibold" (click)="irACursoForm()">
           <i class="bi bi-play-circle me-2"></i>
           Ir a la actividad
         </button>
       </div>
-      <div *ngIf="!nivel" class="alert alert-danger mt-4">Nivel no encontrado.</div>
     </div>
     <div class="card-footer bg-white border-0 text-center small text-muted">
-      <span *ngIf="nivel">Curso: {{ cursoId }} &mdash; Tema: {{ temaNombre }}</span>
+      <span *ngIf="curso">Curso: {{ curso.titulo }} &mdash; Tema: {{ temaNombre }}</span>
     </div>
   </div>
 </div>

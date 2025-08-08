@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // USUARIOS
   listarUsuarios(): Observable<any[]> {
@@ -90,6 +90,19 @@ export class UsuarioService {
   listarGamificaciones(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/gamificacion/gamificaciones`);
   }
+
+  // ...existing code...
+
+  // VERIFICACIÓN DE CORREO
+  // enviarCodigoVerificacion(id: number): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/usuarios/${id}/enviar-codigo-verificacion`, {});
+  // }
+
+  // validarCodigoVerificacion(id: number, codigo: string): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/usuarios/${id}/validar-codigo-verificacion?codigo=${codigo}`, {});
+  // }
+
+  // ...existing code...
 
   // CURSOS
   crearCurso(curso: any): Observable<any> {

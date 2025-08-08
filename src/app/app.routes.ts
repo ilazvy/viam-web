@@ -1,3 +1,4 @@
+// app.routes.ts
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -12,12 +13,15 @@ import { MedallasComponent } from './medallas/medallas.component';
 import { NoEncontradoComponent } from './no-encontrado/no-encontrado.component';
 import { NivelDetalleComponent } from './nivel-detalle/nivel-detalle.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { FormularioComponent } from './formulario/formulario.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' }, // <-- Redirección al home
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
+  {
+    path: 'formulario', component: FormularioComponent  },
   {
     path: '',
     component: MainLayoutComponent,

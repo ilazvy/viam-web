@@ -1,41 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
-interface Nivel {
-  id: string;
-  titulo: string;
-  descripcion: string;
-  tipo: 'lectura' | 'preguntas' | 'examen';
-  puntajeMaximo?: number;
-}
-
-interface Tema {
-  id: string;
-  titulo: string;
-  descripcion: string;
-  subtemas?: Tema[];
-  niveles: Nivel[];
-}
-
-interface Instructor {
-  id: string;
-  nombre: string;
-}
-
 interface Curso {
-  id: string;
+  id: number;
   titulo: string;
   slug: string;
   descripcion: string;
-  imagen: string;
-  temas: Tema[];
-  instructor: Instructor;
+  urlImagen: string;
+  temas: string[]; // <--- SOLO un array de string
+  instructor: { id: number; nombre: string };
   fechaCreacion: string;
-  nivel: 'principiante' | 'intermedio' | 'avanzado';
-  duracionEstimada: number;
+  nivel: 'PRINCIPIANTE' | 'INTERMEDIO' | 'AVANZADO';
+  duracionHoras: number;
   puntajeMaximo: number;
-  estado: 'activo' | 'borrador';
+  estado: 'ACTIVO' | 'BORRADOR';
 }
 
 @Component({
@@ -48,80 +28,49 @@ interface Curso {
 export class NivelDetalleComponent implements OnInit {
   cursoId = '';
   temaIndex = 0;
-  nivelIndex = 0;
-  nivel: Nivel | null = null;
+  curso: Curso | null = null;
   temaNombre = '';
+  loading = true;
+  errorMsg: string | null = null;
 
-  // Simulación de cursos por id, igual que en curso-detalle.component.ts
-  cursosTemas: { [key: string]: Curso } = {
-    '1': {
-      id: '1',
-      titulo: 'Curso de Ciencia',
-      slug: 'curso-de-ciencia',
-      descripcion: 'Este curso explora los fundamentos de la ciencia, el método científico y su aplicación en la vida diaria. (Aquí irían al menos 500 palabras de descripción).',
-      imagen: 'https://ejemplo.com/imagen.jpg',
-      temas: [
-        {
-          id: 't1',
-          titulo: 'Introducción a la Ciencia',
-          descripcion: 'Conoce qué es la ciencia y sus ramas.',
-          niveles: [
-            {
-              id: 'n1',
-              titulo: 'Lectura: ¿Qué es la ciencia?',
-              descripcion: 'Definición y ramas de la ciencia.',
-              tipo: 'lectura'
-            },
-            {
-              id: 'n2',
-              titulo: 'Preguntas de repaso',
-              descripcion: 'Preguntas sobre la lectura.',
-              tipo: 'preguntas'
-            }
-          ]
-        }
-        // ...más temas si lo deseas
-      ],
-      instructor: {
-        id: 'u1',
-        nombre: 'Juan Pérez'
-      },
-      fechaCreacion: '2025-06-08T12:00:00Z',
-      nivel: 'principiante',
-      duracionEstimada: 10,
-      puntajeMaximo: 100,
-      estado: 'activo'
-    }
-    // ...otros cursos si lo deseas
-  };
-
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     this.cursoId = this.route.snapshot.paramMap.get('cursoId') || '';
     this.temaIndex = +(this.route.snapshot.paramMap.get('temaIndex') || 0);
-    this.nivelIndex = +(this.route.snapshot.paramMap.get('nivelIndex') || 0);
 
-    const curso = this.cursosTemas[this.cursoId];
-    if (curso && curso.temas[this.temaIndex]) {
-      this.temaNombre = curso.temas[this.temaIndex].titulo;
-      this.nivel = curso.temas[this.temaIndex].niveles[this.nivelIndex];
-    }
+    this.http.get<Curso>(`http://localhost:8080/api/cursos/id/${this.cursoId}`)
+      .subscribe({
+        next: (curso) => {
+          this.curso = curso;
+          this.temaNombre = curso.temas && curso.temas[this.temaIndex] ? curso.temas[this.temaIndex] : 'Tema no encontrado';
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMsg = 'No se pudo cargar el curso o el tema.';
+          this.loading = false;
+        }
+      });
   }
 
   irACursoForm() {
-    if (!this.nivel) return;
+    // Aquí podrías pasar el nombre del tema como título, si quieres
     this.router.navigate(['/curso-form'], {
       queryParams: {
-        tipo: this.nivel.tipo,
-        titulo: this.nivel.titulo,
-        descripcion: this.nivel.descripcion
-      },
-      state: { nivel: this.nivel }
+        titulo: this.temaNombre
+      }
     });
   }
 
   volverAlCurso() {
-    this.router.navigate(['/cursos', this.cursoId]);
+    if (this.curso) {
+      this.router.navigate(['/cursos', this.curso.slug]);
+    } else {
+      this.router.navigate(['/cursos']);
+    }
   }
 }

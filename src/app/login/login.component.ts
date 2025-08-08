@@ -1,8 +1,10 @@
+// login.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +19,17 @@ export class LoginComponent {
   intentosFallidos = 0;
   bloqueoActivo = false;
   tiempoBloqueo = 30000;
+  loading = false;
+  // Animación extra para feedback visual al iniciar sesión
+  animacionBoton = false;
+  mostrarPassword = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private location: Location) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private location: Location,
+    private http: HttpClient
+  ) {
     this.formularioLogin = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -39,19 +50,32 @@ export class LoginComponent {
 
     const { email, password } = this.formularioLogin.value;
     this.loginError = null;
+    this.loading = true;
+    this.animacionBoton = true;
 
-    // Simulación de respuesta:
-    if (email === 'usuario@viam.com' && password === '123456') {
-      this.intentosFallidos = 0;
-      this.router.navigate(['/cursos']);
-    } else {
-      this.manejarErrorLogin();
-    }
+    // Delay visual para animación de botón antes de enviar petición
+    setTimeout(() => {
+      this.http.post<any>('http://localhost:8080/api/auth/login', { email, password })
+        .subscribe({
+          next: (resp) => {
+            this.loading = false;
+            this.animacionBoton = false;
+            localStorage.setItem('usuarioId', resp.id);
+            this.intentosFallidos = 0;
+            this.router.navigate(['/cursos']);
+          },
+          error: (err) => {
+            this.loading = false;
+            this.animacionBoton = false;
+            this.manejarErrorLogin(err);
+          }
+        });
+    }, 350); // 350ms para que la animación se note
   }
 
-  private manejarErrorLogin() {
+  private manejarErrorLogin(err?: any) {
     this.intentosFallidos++;
-    this.loginError = 'Email o contraseña incorrectos';
+    this.loginError = err?.error?.message || 'Email o contraseña incorrectos';
 
     if (this.intentosFallidos >= 3) {
       this.bloqueoActivo = true;

@@ -1,18 +1,36 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  imports: []
+  imports: [NgClass, NgIf]
 })
 export class NavbarComponent {
-  constructor(private router: Router) {}
+  seccionActual: 'curso' | 'materias' | 'perfil' | 'configuracion' | null = null;
+  tieneNotificaciones = false; // Cambia a false si no hay notificaciones
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      const url = this.router.url;
+      if (url.startsWith('/cursos/') && url.split('/').length > 2) {
+        this.seccionActual = 'curso';
+      } else if (url.startsWith('/cursos')) {
+        this.seccionActual = 'materias';
+      } else if (url.startsWith('/perfil')) {
+        this.seccionActual = 'perfil';
+      } else if (url.startsWith('/configuracion')) {
+        this.seccionActual = 'configuracion';
+      } else {
+        this.seccionActual = null;
+      }
+    });
+  }
 
   irCursoActual() {
-    // Cambia el id por el curso actual del usuario si lo tienes
     this.router.navigate(['/cursos', 'ciencia']);
   }
 
